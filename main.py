@@ -19,9 +19,16 @@ def make_kill_rank(teams: list[Team], top_n: int=10) -> list[dict[str, str, int]
     # 辞書形式に変換
     kill_rank = [{"Team": player.team, "Name": player.name, "Kill": player.total_kills} for player in top_players]
 
-    # for i in kill_rank:
-    #     print(i)
     return kill_rank
+
+def make_team_rank(teams: list[Team]):
+    """チームランキングの作成"""
+    teams.sort(key=lambda t: t.total_pt, reverse=True)
+
+    for t in teams:
+        print(t.team_name, t.total_pt)
+
+    return teams
 
 
 def main():
@@ -45,7 +52,9 @@ def main():
         team_sheet = excel.parse(tag)
         teams.append(Team(team_sheet, tag, rank_pts, kill_pt))
 
-    make_kill_rank(teams)
+    team_rank = make_team_rank(teams)
+
+    kill_rank = make_kill_rank(teams)
 
 
 if __name__ == "__main__":
